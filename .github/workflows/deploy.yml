@@ -1,0 +1,39 @@
+name: Deploy Node App to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu
+
+            if [ ! -d "node-app" ]; then
+              git clone https://github.com/sourav28601/node-app-deploy.git
+            fi
+
+            cd node-app
+            git pull origin main
+            npm install
+
+            if pm2 describe node-app > /dev/null; then
+              pm2 restart node-app
+            else
+              pm2 start server.js --name node-app
+            fi
+
+            pm2 save
