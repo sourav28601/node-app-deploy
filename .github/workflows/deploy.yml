@@ -26,7 +26,7 @@ jobs:
               git clone https://github.com/sourav28601/node-app-deploy.git
             fi
 
-            cd node-app
+            cd node-app-deploy
             git pull origin main
             npm install
 
