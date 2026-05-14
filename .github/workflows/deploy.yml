@@ -20,13 +20,13 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ubuntu
+           cd /home/ubuntu
 
             if [ ! -d "node-app" ]; then
-              git clone https://github.com/sourav28601/node-app-deploy.git
+              git clone https://github.com/sourav28601/node-app-deploy.git node-app
             fi
 
-            cd node-app-deploy
+            cd node-app
             git pull origin main
             npm install
 
@@ -35,5 +35,5 @@ jobs:
             else
               pm2 start server.js --name node-app
             fi
-
+            
             pm2 save
