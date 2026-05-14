@@ -30,7 +30,7 @@ jobs:
             git pull origin main
             npm install
 
-            if pm2 describe node-app > /dev/null; then
+            if pm2 describe node-app > /dev/null 2>&1; then
               pm2 restart node-app
             else
               pm2 start server.js --name node-app
